@@ -1,2 +1,212 @@
-<h1>Servidor Render</h1>
-<p>Projeto Multicloud funcionando.</p>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dashboard F2C - Monitoramento Inteligente</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background:#0f172a;
+    color:#fff;
+    padding:30px;
+}
+
+header{
+    margin-bottom:30px;
+}
+
+header h1{
+    font-size:32px;
+    margin-bottom:8px;
+}
+
+header p{
+    color:#cbd5e1;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:#1e293b;
+    padding:25px;
+    border-radius:18px;
+    box-shadow:0 10px 25px rgba(0,0,0,.25);
+}
+
+.card h2{
+    font-size:18px;
+    color:#94a3b8;
+    margin-bottom:15px;
+}
+
+.value{
+    font-size:46px;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.status{
+    font-size:16px;
+    font-weight:bold;
+    padding:8px 12px;
+    border-radius:10px;
+    display:inline-block;
+}
+
+.ok{
+    background:#14532d;
+    color:#86efac;
+}
+
+.alert{
+    background:#7f1d1d;
+    color:#fecaca;
+}
+
+.warn{
+    background:#78350f;
+    color:#fde68a;
+}
+
+.footer{
+    margin-top:30px;
+    background:#1e293b;
+    padding:20px;
+    border-radius:18px;
+}
+
+.small{
+    color:#94a3b8;
+    margin-top:8px;
+}
+
+.clock{
+    font-size:18px;
+    color:#38bdf8;
+    margin-top:10px;
+}
+</style>
+</head>
+<body>
+
+<header>
+    <h1>Dashboard F2C - Fog to Cloud</h1>
+    <p>Monitoramento Local (Fog Layer) + Envio para AWS / Render</p>
+</header>
+
+<section class="grid">
+
+<div class="card">
+    <h2>👥 Sensor de Lotação</h2>
+    <div class="value" id="lotacao">0</div>
+    <div class="status ok" id="statusLotacao">Normal</div>
+</div>
+
+<div class="card">
+    <h2>🌡️ Temperatura Ambiente</h2>
+    <div class="value" id="temp">0°C</div>
+    <div class="status ok" id="statusTemp">Ideal</div>
+</div>
+
+<div class="card">
+    <h2>🖨️ Servidor de Impressão</h2>
+    <div class="value" id="paginas">0</div>
+    <div class="status ok">Páginas Processadas</div>
+</div>
+
+<div class="card">
+    <h2>⚡ Processamento Local Fog</h2>
+    <div class="value" id="cpu">0%</div>
+    <div class="status ok">Servidor Online</div>
+</div>
+
+</section>
+
+<section class="footer">
+    <h2>📡 Eventos do Sistema</h2>
+    <p id="log">Aguardando dados dos sensores...</p>
+    <div class="clock" id="hora"></div>
+    <p class="small">Simulação acadêmica para Arquitetura F2C</p>
+</section>
+
+<script>
+let paginas = 15890;
+
+function atualizar(){
+
+    // lotação
+    let lotacao = Math.floor(Math.random() * 90);
+    document.getElementById("lotacao").innerText = lotacao;
+
+    let statusLot = document.getElementById("statusLotacao");
+
+    if(lotacao < 45){
+        statusLot.className = "status ok";
+        statusLot.innerText = "Normal";
+    }else if(lotacao < 70){
+        statusLot.className = "status warn";
+        statusLot.innerText = "Moderado";
+    }else{
+        statusLot.className = "status alert";
+        statusLot.innerText = "Lotado";
+    }
+
+    // temperatura
+    let temp = (22 + Math.random()*12).toFixed(1);
+    document.getElementById("temp").innerText = temp + "°C";
+
+    let statusTemp = document.getElementById("statusTemp");
+
+    if(temp <= 27){
+        statusTemp.className = "status ok";
+        statusTemp.innerText = "Ideal";
+    }else if(temp <= 30){
+        statusTemp.className = "status warn";
+        statusTemp.innerText = "Atenção";
+    }else{
+        statusTemp.className = "status alert";
+        statusTemp.innerText = "Alta";
+    }
+
+    // paginas impressão
+    paginas += Math.floor(Math.random() * 25);
+    document.getElementById("paginas").innerText = paginas;
+
+    // cpu fog
+    let cpu = Math.floor(Math.random()*55)+20;
+    document.getElementById("cpu").innerText = cpu + "%";
+
+    // log
+    document.getElementById("log").innerText =
+    "Dados processados localmente e enviados para nuvem com sucesso.";
+}
+
+function relogio(){
+    const agora = new Date();
+    document.getElementById("hora").innerText =
+    "Última atualização: " + agora.toLocaleTimeString();
+}
+
+setInterval(()=>{
+    atualizar();
+    relogio();
+},2000);
+
+atualizar();
+relogio();
+</script>
+
+</body>
+</html>
